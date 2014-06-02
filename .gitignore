@@ -1,0 +1,11 @@
+*~
+*.swp
+*.pyc
+*.iml
+.idea/
+static_files/
+dist/
+*egg-info/
+build/
+backup
+docs/design/_build
