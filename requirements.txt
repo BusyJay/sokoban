@@ -1,0 +1,11 @@
+Crypto
+requests
+BeautifulSoup4
+html5lib
+sh
+Django>=1.5, <1.6
+MySQL-python
+kerberos
+django-suit
+apscheduler
+pytz
