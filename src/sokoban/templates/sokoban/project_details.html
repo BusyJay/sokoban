@@ -1,0 +1,130 @@
+<div class="container">
+    <tabset justified="true">
+        <tab heading="Basic Information" ng-controller="projectBasicCtrl">
+            <form class="form-horizontal" method="post" name="form" role="form" ng-submit="submit_form()">
+                {% include "form/angular_edit.html" with form=project_basic_form form_name='form' ng_context='basic' %}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="basic_name">Project Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" disabled ng-model="basic.name" class="form-control" id="basic_name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="basic_create_time">Create Time</label>
+                    <div class="col-sm-9">
+                        <input type="text" disabled ng-model="basic.create_time" class="form-control" id="basic_create_time">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="basic_update_time">Last Update</label>
+                    <div class="col-sm-9">
+                        <input type="text" disabled ng-model="basic.update_time" class="form-control" id="basic_update_time">
+                    </div>
+                </div>
+                <div class="form-group" ng-show="form.$dirty">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <i class="fa fa-spinner fa-spin" ng-show="submiting"></i> <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </tab>
+        <tab heading="Schedule" ng-controller="projectScheduleCtrl">
+            <form role="form" ng-submit="submit_form()" name="form" class="form-horizontal">
+                <div class="form-group"></div>
+                <div class="form-group">
+                    <label for="schedule_status" class="col-sm-3 control-label">Status</label>
+                    <div class="btn-group col-sm-9">
+                        <button type="button" class="btn btn-primary" ng-model="schedule.status" btn-radio="0">Start</button>
+                        <button type="button" class="btn btn-primary" ng-model="schedule.status" btn-radio="1">Stop</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule_interval" class="col-sm-3 control-label">Interval (hours)</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" min="1" ng-model="schedule.interval">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule_start_time" class="col-sm-3 control-label">Start Time</label>
+                    <div class="col-sm-9">
+                        <p class="input-group">
+                        <input type="text" is-open="opened" ng-model="schedule.start_time" class="form-control" id="schedule_start_time" datepicker-popup="MMMM,dd yyyy">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        </p>
+                        <timepicker ng-model="schedule.start_time"></timepicker>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule_update_time" class="col-sm-3 control-label">Last Update</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" disabled value="[[[schedule.update_time | date:'medium' ]]]">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule_update_time" class="col-sm-3 control-label">Next Run</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" disabled value="[[[schedule.next_run | date:'medium' ]]]">
+                    </div>
+                </div>
+                <div class="form-group" ng-show="form.$dirty">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <i class="fa fa-spinner fa-spin" ng-show="submiting"></i> <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </tab>
+        <tab ng-repeat="mount_option in available_mount_options" heading="[[[mount_option.label]]]" ng-controller="middleWareController" select="load_data(mount_option.name)">
+            <form class="form-horizontal" name="form" ng-submit="submit_form(mount_option.name, $index)">
+                <div class="form-group"></div>
+                <div class="form-group">
+                    <label for="middle_ware_type" class="col-sm-3 control-label">Checkout Client</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" ng-model="middle_ware" ng-options="m.name for m in get_available_midlle_ware(mount_option.name)" id="middle_ware_type"></select>
+                    </div>
+                </div>
+                <div ng-repeat="(field, option) in middle_ware.form" class="form-group">
+                    <ng-switch on="option.type">
+                        <div ng-switch-when="checkbox">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <div class="checkbox">
+                                    <label><input ng-disabled="option.readonly" type="checkbox" ng-model="option.value" name="[[[field]]]">[[[option.verbose || field]]]</label>
+                                </div>
+                            </div>
+							<div class="help-block" ng-show="option.helper_text" ng-bind-html="trustHtml(option.helper_text)"></div>
+                        </div>
+						<div ng-switch-when="select">
+							<label for="pull_[[[field]]]" class="col-sm-3 control-label">[[[option.verbose || field]]]</label>
+							<div class="col-sm-9">
+								<select ng-readonly="option.readonly" class="form-control" name="[[[field]]]" required="option.require" ng-model="option.value" ng-options="pair[0] as pair[1] for pair in option.choices">
+								</select>
+								<div class="help-block" ng-show="option.helper_text" ng-bind-html="trustHtml(option.helper_text)"></div>
+							</div>
+						</div>
+						<div ng-switch-when="textarea">
+							<label for="pull_[[[field]]]" class="col-sm-3 control-label">[[[option.verbose || field]]]</label>
+							<div class="col-sm-9">
+								<textarea ng-readonly="option.readonly" ng-model="option.value" ng-required="option.require" name="[[[field]]]" class="form-control" rows="5">
+								</textarea>
+								<div class="help-block" ng-show="option.helper_text" ng-bind-html="trustHtml(option.helper_text)"></div>
+							</div>
+						</div>
+                        <div ng-switch-default>
+                            <label for="pull_[[[field]]]" class="col-sm-3 control-label">[[[option.verbose || field]]]</label>
+                            <div class="col-sm-9">
+                                <input ng-readonly="option.readonly" type="[[[option.type]]]" ng-required="option.require" ng-model="option.value" name="[[[field]]]" class="form-control">
+                                <div class="help-block" ng-show="option.helper_text" ng-bind-html="trustHtml(option.helper_text)"></div>
+                            </div>
+                        </div>
+                    </ng-switch>
+                </div>
+                <div class="form-group" ng-show="form.$dirty">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <i class="fa fa-spinner fa-spin" ng-show="submiting"></i> <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </tab>
+    </tabset>
+</div>

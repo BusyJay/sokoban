@@ -1,0 +1,7 @@
+include README.rst
+include license.txt
+include requirements.txt
+recursive-include docker/sokoban *
+recursive-include src/sokoban/static *
+recursive-include src *.html
+recursive-include config *

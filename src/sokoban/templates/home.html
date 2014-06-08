@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-8" ng-init="refresh_logs('{% url 'get_logs' %}')">
+        <div class="panel-info">
+            <div class="panel-heading"><h2 class="panel-title">Logs<span ng-click="refresh_logs('{% url 'get_logs' %}')" class="pointer fa fa-refresh pull-right ng-class:{'fa-spin':logs_updating}"></span></h2></div>
+            <div class="panel-body">
+                <p ng-show="logs.length" ng-class="{0:'alert-info',1:'alert-debug',2:'alert-warning',3:'alert-danger'}[log.level]" ng-repeat="log in logs"><span>[</span>[[[log.log_time|date:'medium']]]<span>]</span> [[[log.content]]]</p>
+                <p ng-hide="logs.length">No logs yet.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-init="refresh_project_list('{% url 'project_list' owner=user.username %}')">
+        <div class="panel-info">
+            <div class="panel-heading"><h2 class="panel-title">Projects <div class="pull-right"><a class="pointer fa fa-plus" href="#{% url 'project_rest' name='untitle' action='create' %}"></a> <span ng-click="refresh_project_list('{% url 'project_list' owner=user.username %}')" class="pointer fa fa-refresh ng-class:{'fa-spin':project_updating}"></span></div></h2></div>
+            <div class="panel-body" ng-hide="project_list.length"><p>No project yet.</p></div>
+            <table class="table" ng-show="project_list.length">
+                <thead>
+                    <tr><th>Project Name</th><th>Last Sync Time</th></tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="project in project_list">
+                        <td><a class="btn-link" ng-href="#{% url 'project_rest' name='[[[project.name]]]' action='details' %}">[[[project.name]]]</a></td>
+                        <td>[[[(project.last_sync_time|date:'mediumDate') || 'Not sync yet']]]</td>
+						<td><span class="btn-link pointer fa fa-trash-o" ng-click="delete_project('{% url 'project_rest' name='[[[project.name]]]' %}'.replace('[[[project.name]]]', project.name), project.name)"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

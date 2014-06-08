@@ -1,0 +1,22 @@
+{% load sokoban_tags %}
+<div class="form-group">
+    <alert type="'danger'" close="errors = null" ng-show="errors"><div ng-bind-html="errors"></div></alert>
+</div>{% if not turn_off_csrf_protect %}{% csrf_token %}{% endif %}
+{% for field in form %}
+    {% if field|is_checkbox %}
+    <div class="checkbox col-sm-offset-3 fix">
+        <label>
+            {{ field|angularfy:ng_context }} {{ field.label }}
+            <div class="help-block" ng-show='{{ form_name }}.{{ field.name }}.$invalid'>This field is not valid!</div>
+        </label>
+    </div>
+    {% else %}
+    <div class="form-group ng-class:{'has-error':{{ form_name }}.{{field.name }}.$invalid}">
+        <label class="col-sm-3 control-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
+        <div class="col-sm-9">
+            {{ field|add_cls:"form-control"|angularfy:ng_context }}
+            <div class="help-block" ng-show='{{ form_name }}.{{ field.name }}.$invalid'>This field is not valid!</div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}

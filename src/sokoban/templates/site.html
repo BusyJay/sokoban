@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}{% load staticfiles %}
+<div class="container">
+    <div class="header" ng-controller="navigationCtrl">
+        <div ng-init="user = '{{user.username}}'"></div>
+        <ul class="nav nav-pills pull-right" ng-show="user" class="animate-if">
+            <li class="active"><a href="#{% url 'home' %}">[[[user]]]</a></li>
+            <li><a href="#{% url 'logout'%}?next={{ request.path }}">Logout</a></li>
+        </ul>
+        <ul class="nav nav-pills pull-right" ng-show="!user" class="animate-if">
+            <li class="active"><a href="#{% url 'login' %}?next={{ request.path }}">Login</a></li>
+        </ul>
+        <h2><a href="#{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="Sokoban"></a></h2>
+    </div>
+    <div class="content" ng-view></div>
+</div>
+{% endblock %}

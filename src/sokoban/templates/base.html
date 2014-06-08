@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="sokoban">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Welcome to SOKOBAN{% endblock %}</title>{% load staticfiles %}
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/sokoban.css' %}">
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-sanitize.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-cookies.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
+        <script src="{% static 'js/ui-bootstrap-tpls-0.10.0.min.js' %}"></script>
+        <script src="{% static 'js/sokoban.js' %}"></script>
+    </body>
+</html>

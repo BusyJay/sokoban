@@ -1,0 +1,4 @@
+<div class="alert alert-warning" ng-controller="permissionCtrl">
+    <h3 ng-init="notify_login('{{user.is_authenticated}}')">Permission Denied</h3>
+    <p>If you have not signed in yet, please click <a href="#/accounts/login?next={{request.path}}">here</a> to sign in.</p>
+</div>

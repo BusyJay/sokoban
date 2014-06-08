@@ -1,0 +1,7 @@
+split sokoban.js to different app js for secure confideration
+reduce ajax request times
+add log level option
+finish documentation synchronization
+add better transaction support
+rewrite nc_confluence to use xml/rpc(confluence's json/rpc seems bugy.)
+always add postfix and not break link
